@@ -5,13 +5,13 @@
 #include <sstream>
 #include "ros/ros.h"
 #include "std_msgs/String.h"
-
+#include <time.h>
 
 int main(int argc, char **argv)
 {
     // ROS节点初始化
     ros::init(argc, argv, "frame_gen");
-
+    
     // 创建节点句柄
     ros::NodeHandle n;
 
@@ -24,7 +24,6 @@ int main(int argc, char **argv)
     int count = 0;
     while (ros::ok())
     {
-        // 初始化std_msgs::String类型的消息
         std_msgs::String msg;
         std::stringstream ss;
         ss << "hello world " << count;

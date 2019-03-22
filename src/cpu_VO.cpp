@@ -34,7 +34,11 @@ void cpu_VO::cpuVOPub(const std_msgs::String::ConstPtr& msg)
 
     // doing computation
     n.setParam("running_cpu_VO", 1);
+    // starting time
+    ros::Time start = ros::Time::now();
     usleep(10*1000);
+    // finishing time
+    ROS_INFO_STREAM("image ID: " <<msg->data.substr(31) << "; starting time: " << start << "; finishing time: " << ros::Time::now());
     std::stringstream ss;
     std_msgs::String msg_pub;
     ss << "  CPU VO result: " << msg->data.c_str();

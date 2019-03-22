@@ -41,7 +41,7 @@ void dpu_NetVLAD::callbackThread(const std_msgs::String::ConstPtr& msg)
     n.param<int>("running_dpu_VO", running_dpu_VO, 0);
     n.param<int>("depth_dpu_VO", depth_dpu_VO, 0);
     n.param<int>("depth_cpu_NetVLAD", depth_cpu_NetVLAD, 0);
-    ROS_INFO_STREAM(" ;depth_cpu_NetVLAD: " << depth_cpu_NetVLAD << " ;depth_dpu_VO: " << depth_dpu_VO << " ;running_dpu_VO: " << running_dpu_VO << " ;recent_doing: " << recent_doing);
+    ROS_INFO_STREAM("depth_cpu_NetVLAD: " << depth_cpu_NetVLAD << "; depth_dpu_VO: " << depth_dpu_VO << "; running_dpu_VO: " << running_dpu_VO << "; recent_doing: " << recent_doing);
        
     if ( (running_dpu_VO > 0) ||  depth_dpu_VO > 1 || depth_cpu_NetVLAD > 1 || recent_doing>0){
         if( recent_doing){
@@ -58,9 +58,12 @@ void dpu_NetVLAD::callbackThread(const std_msgs::String::ConstPtr& msg)
         n.setParam("running_dpu_NetVLAD", 1);
         ROS_INFO("DPU NetVLAD heard: [%s]", msg->data.c_str());
 
-        
+        // starting time
+        ros::Time start = ros::Time::now();
         // doing computation
         usleep(66*1000);
+        // finishing time
+        ROS_INFO_STREAM("image ID: " << msg->data.substr(12) << "; starting time: " << start << "; finishing time: " << ros::Time::now());
         std::stringstream ss;
         std_msgs::String msg_pub;
         ss << " DPU NetVLAD result: " << msg->data.c_str();

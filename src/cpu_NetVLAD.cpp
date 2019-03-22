@@ -29,7 +29,7 @@ private:
 };
 
 void cpu_NetVLAD::push2queue(const std_msgs::String::ConstPtr& msg){
-    ROS_INFO("cpu_NetVLAD heard: [%s]", msg->data.c_str());
+    // ROS_INFO("cpu_NetVLAD heard: [%s]", msg->data.c_str());   // 塞入队列
     dpu_netvlad_queue.push(msg);
 }
 
@@ -47,10 +47,12 @@ void cpu_NetVLAD::cpuNetVLADPub(void* __this)
             n.setParam("running_cpu_NetVLAD", 1);
             n.setParam("depth_cpu_NetVLAD", int(_this->dpu_netvlad_queue.size() ) );
             ROS_INFO("CPU NetVLAD heard: [%s]", _this->dpu_netvlad_queue.front()->data.c_str() );
-
+            // starting time
+            ros::Time start = ros::Time::now();
             // doing computation
-
             usleep(360*1000);
+            // finishing time
+            ROS_INFO_STREAM("image ID: " <<_this->dpu_netvlad_queue.front()->data.substr(33) << "; starting time: " << start << "; finishing time: " << ros::Time::now());
             std::stringstream ss;
             std_msgs::String msg_pub;
             ss << "  CPU NetVLAD result: " << _this->dpu_netvlad_queue.front()->data.c_str();
